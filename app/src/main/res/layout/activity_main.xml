@@ -6,7 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></androidx.drawerlayout.widget.DrawerLayout>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarmanhinhchinh"
+                app:title="Tủ Truyện"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
+        </LinearLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
 
 </LinearLayout>
