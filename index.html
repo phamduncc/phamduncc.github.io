@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bốc Lì Xì - Nhận Lộc Đầu Năm</title>
+    <meta name="description" content="Bốc Lì Xì - Ứng dụng bốc lì xì may mắn đầu năm mới. Bốc phong bao, vòng quay may mắn, lắc lì xì và nhiều tính năng thú vị khác!">
+    <meta name="keywords" content="bốc lì xì, lì xì, tết, năm mới, phong bao, may mắn, red envelope, lunar new year">
+    <meta name="author" content="Van Du Pham">
+    <meta property="og:title" content="Bốc Lì Xì - Nhận Lộc Đầu Năm">
+    <meta property="og:description" content="Ứng dụng bốc lì xì may mắn đầu năm mới. Bốc phong bao, vòng quay may mắn, lắc lì xì!">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --red:#D32F2F;--dark-red:#8B0000;--deeper-red:#5c0000;
+            --gold:#FFD700;--gold-light:#FFE082;--gold-dim:rgba(255,215,0,0.15);
+            --ivory:#FFF8E7;--bg:#0d0000;
+        }
+        html{scroll-behavior:smooth}
+        body{font-family:'Noto Sans',system-ui,sans-serif;background:var(--bg);color:var(--ivory);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+        /* ───── BACKGROUND ───── */
+        .bg-canvas{position:fixed;inset:0;z-index:-2;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%,rgba(211,47,47,.25),transparent),
+                radial-gradient(ellipse 70% 50% at 80% 90%,rgba(139,0,0,.3),transparent),
+                radial-gradient(circle at 50% 50%,#1a0000,var(--bg));
+        }
+        /* animated aurora ribbons */
+        .bg-canvas::after{content:'';position:absolute;inset:0;
+            background:
+                conic-gradient(from 160deg at 50% 45%,transparent 0%,rgba(255,215,0,.04) 15%,transparent 30%,rgba(211,47,47,.06) 50%,transparent 65%);
+            animation:auroraRotate 25s linear infinite;
+        }
+        @keyframes auroraRotate{to{transform:rotate(360deg)}}
+
+        /* ───── PARTICLES ───── */
+        .particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+        .particle{position:absolute;animation:floatUp linear infinite;opacity:0}
+        @keyframes floatUp{
+            0%{transform:translateY(105vh) rotate(0deg) scale(.8);opacity:0}
+            8%{opacity:.5}
+            85%{opacity:.45}
+            100%{transform:translateY(-8vh) rotate(360deg) scale(1.1);opacity:0}
+        }
+
+        /* ───── LANTERNS ───── */
+        .lantern{position:fixed;top:-5px;font-size:38px;z-index:0;opacity:.35;pointer-events:none;animation:sway 4s ease-in-out infinite}
+        .lantern-l{left:20px}.lantern-r{right:20px;animation-delay:2s}
+        @keyframes sway{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(6deg) translateY(4px)}}
+
+        /* ───── HERO ───── */
+        .hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 40px;position:relative}
+        .hero::before{content:'';position:absolute;width:min(700px,120vw);aspect-ratio:1;border-radius:50%;
+            background:radial-gradient(circle,rgba(255,215,0,.07) 0%,rgba(211,47,47,.04) 40%,transparent 70%);
+            pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);
+        }
+
+        .app-icon-wrap{position:relative;margin-bottom:24px}
+        .app-icon{font-size:110px;display:block;animation:heroFloat 3s ease-in-out infinite;filter:drop-shadow(0 15px 40px rgba(255,215,0,.25))}
+        @keyframes heroFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.06)}}
+        .icon-ring{position:absolute;inset:-30px;border-radius:50%;border:2px solid rgba(255,215,0,.12);animation:ringPulse 3s ease-in-out infinite}
+        .icon-ring:nth-child(2){inset:-55px;border-color:rgba(255,215,0,.06);animation-delay:.8s}
+        @keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.5}}
+
+        .hero h1{font-size:clamp(2.8rem,7vw,4rem);font-weight:900;letter-spacing:4px;
+            background:linear-gradient(135deg,var(--gold) 0%,#fff8dc 30%,var(--gold) 60%,#ffe4a0 100%);
+            background-size:200% 200%;animation:shimmer 4s ease-in-out infinite;
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            margin-bottom:10px;
+        }
+        @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+        .hero .tagline{font-size:1.25rem;color:var(--ivory);opacity:.85;margin-bottom:6px;font-weight:500}
+        .hero .version-badge{display:inline-block;padding:4px 16px;border-radius:20px;font-size:.78rem;font-weight:600;
+            background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.2);color:var(--gold);margin-bottom:44px}
+
+        /* ───── STORE BUTTONS (official badge style) ───── */
+        .store-buttons{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-bottom:50px}
+        .store-btn{display:inline-flex;align-items:center;gap:14px;padding:0;
+            border-radius:13px;text-decoration:none;transition:all .35s cubic-bezier(.25,.8,.25,1);
+            overflow:hidden;border:1.5px solid rgba(255,255,255,.2);
+            height:60px;padding:0 24px 0 18px;
+        }
+        .store-btn:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 16px 40px rgba(0,0,0,.45)}
+        .store-btn:active{transform:translateY(-1px) scale(.99)}
+
+        .store-btn-apple{background:linear-gradient(145deg,#000 0%,#1a1a1a 100%)}
+        .store-btn-apple:hover{border-color:rgba(255,255,255,.35)}
+        .store-btn-google{background:linear-gradient(145deg,#000 0%,#1a1a1a 100%)}
+        .store-btn-google:hover{border-color:rgba(255,255,255,.35)}
+
+        .store-btn svg{flex-shrink:0}
+        .store-btn-label{text-align:left;line-height:1.2}
+        .store-btn-label small{display:block;font-size:.62rem;color:rgba(255,255,255,.7);font-weight:400;letter-spacing:.3px}
+        .store-btn-label strong{display:block;font-size:1.05rem;color:#fff;font-weight:700;letter-spacing:.2px}
+
+        .scroll-arrow{position:absolute;bottom:28px;animation:arrowBob 2.5s ease-in-out infinite;opacity:.45}
+        .scroll-arrow svg{width:28px;height:28px}
+        @keyframes arrowBob{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(10px);opacity:.7}}
+
+        /* ───── STATS STRIP ───── */
+        .stats{display:flex;justify-content:center;gap:clamp(24px,5vw,60px);padding:50px 20px;
+            background:linear-gradient(180deg,transparent,rgba(139,0,0,.08),transparent);position:relative}
+        .stats::before,.stats::after{content:'';position:absolute;left:10%;right:10%;height:1px;
+            background:linear-gradient(90deg,transparent,rgba(255,215,0,.15),transparent)}
+        .stats::before{top:0}.stats::after{bottom:0}
+        .stat-item{text-align:center}
+        .stat-num{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;
+            background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .stat-label{font-size:.85rem;color:var(--ivory);opacity:.55;margin-top:4px;font-weight:500}
+
+        /* ───── SECTIONS ───── */
+        .section{padding:90px 20px;max-width:1120px;margin:0 auto}
+        .section-header{text-align:center;margin-bottom:64px}
+        .section-header h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:900;
+            background:linear-gradient(135deg,var(--gold),var(--gold-light),var(--gold));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
+        .section-header p{color:var(--ivory);opacity:.6;font-size:1.05rem;max-width:500px;margin:0 auto}
+        .section-divider{width:60px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--gold),transparent);margin:16px auto 0}
+
+        /* ───── PLAY MODES ───── */
+        .modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+        .mode-card{text-align:center;padding:44px 28px 36px;position:relative;
+            background:linear-gradient(160deg,rgba(211,47,47,.08),rgba(139,0,0,.14));
+            border:1px solid rgba(255,215,0,.1);border-radius:24px;
+            transition:all .45s cubic-bezier(.25,.8,.25,1);overflow:hidden}
+        .mode-card::before{content:'';position:absolute;inset:0;border-radius:24px;
+            background:radial-gradient(circle at 50% 0%,rgba(255,215,0,.06),transparent 60%);opacity:0;transition:opacity .4s}
+        .mode-card:hover{transform:translateY(-8px);border-color:rgba(255,215,0,.35);
+            box-shadow:0 24px 50px rgba(0,0,0,.35),0 0 80px rgba(255,215,0,.04)}
+        .mode-card:hover::before{opacity:1}
+
+        .mode-icon{font-size:3.8rem;display:block;margin-bottom:18px;transition:transform .4s ease;
+            filter:drop-shadow(0 6px 20px rgba(255,215,0,.15))}
+        .mode-card:hover .mode-icon{transform:scale(1.15) rotate(-5deg)}
+
+        .mode-card h3{color:var(--gold);font-size:1.15rem;font-weight:700;margin-bottom:10px}
+        .mode-card p{color:var(--ivory);opacity:.65;font-size:.9rem;line-height:1.55}
+
+        /* ───── FEATURE CARDS ───── */
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+        .feature-card{position:relative;padding:36px 30px;border-radius:22px;overflow:hidden;
+            background:linear-gradient(155deg,rgba(211,47,47,.07),rgba(139,0,0,.13));
+            border:1px solid rgba(255,215,0,.08);transition:all .4s cubic-bezier(.25,.8,.25,1)}
+        .feature-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+            background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .5s ease;transform-origin:left}
+        .feature-card:hover{transform:translateY(-6px);border-color:rgba(255,215,0,.28);
+            box-shadow:0 20px 45px rgba(0,0,0,.3)}
+        .feature-card:hover::after{transform:scaleX(1)}
+
+        .feature-icon-wrap{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+            background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(211,47,47,.1));margin-bottom:18px;font-size:1.7rem;
+            border:1px solid rgba(255,215,0,.1);transition:all .3s ease}
+        .feature-card:hover .feature-icon-wrap{background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(211,47,47,.15));
+            border-color:rgba(255,215,0,.25);transform:scale(1.08)}
+
+        .feature-card h3{color:var(--gold);font-size:1.15rem;font-weight:700;margin-bottom:8px}
+        .feature-card p{color:var(--ivory);opacity:.65;line-height:1.6;font-size:.92rem}
+
+        /* ───── STEPS ───── */
+        .steps-container{max-width:680px;margin:0 auto;position:relative}
+        .steps-line{position:absolute;left:31px;top:60px;bottom:60px;width:2px;
+            background:linear-gradient(180deg,var(--gold),rgba(255,215,0,.1));border-radius:2px}
+        .step{display:flex;align-items:flex-start;gap:28px;padding:32px;position:relative;
+            background:linear-gradient(145deg,rgba(211,47,47,.06),rgba(139,0,0,.1));
+            border:1px solid rgba(255,215,0,.08);border-radius:18px;margin-bottom:20px;
+            transition:all .35s ease}
+        .step:last-child{margin-bottom:0}
+        .step:hover{border-color:rgba(255,215,0,.25);transform:translateX(6px);
+            box-shadow:0 12px 30px rgba(0,0,0,.2)}
+        .step-num{flex-shrink:0;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+            font-size:1.25rem;font-weight:900;color:var(--dark-red);z-index:1;
+            background:linear-gradient(135deg,var(--gold),var(--gold-light));
+            box-shadow:0 6px 20px rgba(255,215,0,.25)}
+        .step-body h3{color:var(--gold);font-size:1.05rem;font-weight:700;margin-bottom:5px}
+        .step-body p{color:var(--ivory);opacity:.6;line-height:1.5;font-size:.92rem}
+
+        /* ───── CTA ───── */
+        .cta{text-align:center;padding:110px 24px 80px;position:relative}
+        .cta::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+            width:min(900px,120vw);height:100%;
+            background:radial-gradient(ellipse at center top,rgba(211,47,47,.12),transparent 65%);pointer-events:none}
+        .cta h2{font-size:clamp(2rem,5vw,2.8rem);font-weight:900;margin-bottom:14px;
+            background:linear-gradient(135deg,var(--gold),var(--gold-light));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .cta>p{color:var(--ivory);opacity:.6;font-size:1.1rem;margin-bottom:44px}
+
+        /* ───── FOOTER ───── */
+        footer{text-align:center;padding:48px 20px;border-top:1px solid rgba(255,215,0,.07)}
+        footer .footer-inner{max-width:600px;margin:0 auto}
+        footer .dev-name{color:var(--gold);font-weight:600;font-size:.9rem;opacity:.7;margin-bottom:6px}
+        footer .copy{color:var(--ivory);opacity:.35;font-size:.8rem;margin-bottom:10px}
+        footer a{color:var(--gold);text-decoration:none;opacity:.45;font-size:.82rem;transition:opacity .3s}
+        footer a:hover{opacity:1}
+        footer .footer-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+
+        /* ───── RESPONSIVE ───── */
+        @media(max-width:768px){
+            .store-buttons{flex-direction:column;align-items:center}
+            .store-btn{width:min(280px,85vw)}
+            .modes-grid{grid-template-columns:1fr}
+            .features-grid{grid-template-columns:1fr}
+            .step{flex-direction:column;align-items:center;text-align:center}
+            .steps-line{display:none}
+            .stats{flex-wrap:wrap;gap:20px 40px}
+        }
+
+        /* ───── ANIMATIONS ───── */
+        .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.25,.8,.25,1),transform .7s cubic-bezier(.25,.8,.25,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .reveal-delay-1{transition-delay:.1s}
+        .reveal-delay-2{transition-delay:.2s}
+        .reveal-delay-3{transition-delay:.3s}
+
+        /* glass highlight on cards */
+        .glass-shine{position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+            background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);
+            transition:transform .6s ease;pointer-events:none}
+        .feature-card:hover .glass-shine,.mode-card:hover .glass-shine{transform:translateX(60%) translateY(60%)}
+    </style>
+</head>
+<body>
+    <div class="bg-canvas"></div>
+    <div class="lantern lantern-l">🏮</div>
+    <div class="lantern lantern-r">🏮</div>
+    <div class="particles" id="particles"></div>
+
+    <!-- ════════ HERO ════════ -->
+    <section class="hero">
+        <div class="app-icon-wrap">
+            <div class="icon-ring"></div>
+            <div class="icon-ring"></div>
+            <span class="app-icon">🧧</span>
+        </div>
+        <h1>BỐC LÌ XÌ</h1>
+        <p class="tagline">✨ Nhận Lộc Đầu Năm ✨</p>
+        <span class="version-badge">v1.0.3 · Miễn phí</span>
+
+        <div class="store-buttons">
+            <!-- App Store -->
+            <a href="https://apps.apple.com/us/app/b%C3%B3c-l%C3%AC-x%C3%AC/id6758306529" target="_blank" rel="noopener noreferrer" class="store-btn store-btn-apple">
+                <svg width="30" height="30" viewBox="0 0 496 512" fill="#fff">
+                    <path d="M314.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-27.1-47.3-42.1-85-45.1-35.4-2.9-74 20.7-88.4 20.7-15.2 0-49-19.6-74.4-19.6C63.1 141.2 4 184.8 4 273.4c0 26.2 4.8 53.3 14.4 81.2 12.8 36.9 59 127.2 107.2 125.7 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-92.3zm-56.3-164.2c27.3-32.4 24.8-62.1 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 53.1-11.2 69.5-34.3z"/>
+                </svg>
+                <span class="store-btn-label">
+                    <small>Tải về trên</small>
+                    <strong>App Store</strong>
+                </span>
+            </a>
+            <!-- Google Play -->
+            <a href="https://play.google.com/store/apps/details?id=com.app_tet.boc_li_xi" target="_blank" rel="noopener noreferrer" class="store-btn store-btn-google">
+                <svg width="28" height="30" viewBox="0 0 24 24" fill="none">
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z" fill="#4285F4"/>
+                    <path d="M17.727 8.273L13.792 12l3.935 3.727 4.534-2.617c.82-.474.82-1.746 0-2.22l-4.534-2.617z" fill="#EA4335"/>
+                    <path d="M3.609 22.186L13.792 12l3.935 3.727-11.16 6.44a1.09 1.09 0 0 1-.554.148 1.01 1.01 0 0 1-.404-.129z" fill="#34A853"/>
+                    <path d="M3.609 1.814A1.01 1.01 0 0 1 4.013 1.685c.193 0 .386.05.554.148l11.16 6.44L13.792 12 3.609 1.814z" fill="#FBBC04"/>
+                </svg>
+                <span class="store-btn-label">
+                    <small>Tải về trên</small>
+                    <strong>Google Play</strong>
+                </span>
+            </a>
+        </div>
+
+        <a href="#modes" class="scroll-arrow" aria-label="Scroll down">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,215,0,.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
+        </a>
+    </section>
+
+    <!-- ════════ STATS ════════ -->
+    <div class="stats reveal">
+        <div class="stat-item">
+            <div class="stat-num">100+</div>
+            <div class="stat-label">Lượt tải</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Cách chơi</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">100+</div>
+            <div class="stat-label">Lời chúc Tết</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Chế độ game</div>
+        </div>
+    </div>
+
+    <!-- ════════ PLAY MODES ════════ -->
+    <section class="section" id="modes">
+        <div class="section-header reveal">
+            <h2>3 Cách Chơi Thú Vị</h2>
+            <p>Chọn cách bốc lì xì yêu thích của bạn</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="modes-grid">
+            <div class="mode-card reveal reveal-delay-1">
+                <div class="glass-shine"></div>
+                <span class="mode-icon">🧧</span>
+                <h3>Bốc Phong Bao</h3>
+                <p>Chọn 1 trong nhiều phong bao đỏ may mắn để nhận lì xì đầu năm</p>
+            </div>
+            <div class="mode-card reveal reveal-delay-2">
+                <div class="glass-shine"></div>
+                <span class="mode-icon">🎡</span>
+                <h3>Vòng Quay May Mắn</h3>
+                <p>Quay vòng quay để thử vận may, nhận thưởng từ 10K đến 500K!</p>
+            </div>
+            <div class="mode-card reveal reveal-delay-3">
+                <div class="glass-shine"></div>
+                <span class="mode-icon">📳</span>
+                <h3>Lắc Lì Xì</h3>
+                <p>Lắc điện thoại thật mạnh để mở phong bao và nhận lộc đầu năm</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ FEATURES ════════ -->
+    <section class="section">
+        <div class="section-header reveal">
+            <h2>Tính Năng Nổi Bật</h2>
+            <p>Trải nghiệm Tết trọn vẹn ngay trên điện thoại</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal reveal-delay-1">
+                <div class="glass-shine"></div>
+                <div class="feature-icon-wrap">⏰</div>
+                <h3>Đếm Ngược Giao Thừa</h3>
+                <p>Đếm ngược thời gian đến thời khắc Giao Thừa với hiệu ứng pháo hoa rực rỡ</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-2">
+                <div class="glass-shine"></div>
+                <div class="feature-icon-wrap">📜</div>
+                <h3>100+ Lời Chúc Tết</h3>
+                <p>Bộ sưu tập lời chúc Tết hay và ý nghĩa, dễ dàng chia sẻ đến người thân yêu</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-3">
+                <div class="glass-shine"></div>
+                <div class="feature-icon-wrap">🔮</div>
+                <h3>Xem Mệnh Tuổi</h3>
+                <p>Tra cứu con giáp, mệnh ngũ hành và vận mệnh năm mới theo tuổi của bạn</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-1">
+                <div class="glass-shine"></div>
+                <div class="feature-icon-wrap">🎨</div>
+                <h3>Giao Diện Đẹp Mắt</h3>
+                <p>Thiết kế phong cách Tết truyền thống với đèn lồng, hoa mai và pháo giấy</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-2">
+                <div class="glass-shine"></div>
+                <div class="feature-icon-wrap">⚙️</div>
+                <h3>Tuỳ Chỉnh Linh Hoạt</h3>
+                <p>Tự thiết lập mệnh giá lì xì, số lượng phong bao và lời chúc theo ý thích</p>
+            </div>
+            <div class="feature-card reveal reveal-delay-3">
+                <div class="glass-shine"></div>
+                <div class="feature-icon-wrap">📊</div>
+                <h3>Lịch Sử Bốc Thăm</h3>
+                <p>Lưu lại lịch sử tất cả lần bốc lì xì, xem lại kết quả và lời chúc đã nhận</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ HOW TO USE ════════ -->
+    <section class="section">
+        <div class="section-header reveal">
+            <h2>Cách Sử Dụng</h2>
+            <p>Bốc lì xì chỉ trong 3 bước đơn giản</p>
+            <div class="section-divider"></div>
+        </div>
+        <div class="steps-container">
+            <div class="steps-line"></div>
+            <div class="step reveal reveal-delay-1">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h3>Tải ứng dụng miễn phí</h3>
+                    <p>Tải Bốc Lì Xì từ App Store hoặc Google Play về điện thoại của bạn</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-2">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h3>Chọn cách chơi yêu thích</h3>
+                    <p>Bốc phong bao, quay vòng may mắn hoặc lắc điện thoại — tùy bạn!</p>
+                </div>
+            </div>
+            <div class="step reveal reveal-delay-3">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h3>Nhận lộc & chia sẻ niềm vui</h3>
+                    <p>Mở phong bao nhận lì xì kèm lời chúc Tết, chia sẻ đến mọi người!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════ CTA ════════ -->
+    <section class="cta reveal">
+        <h2>🧧 Bốc Lì Xì Ngay Thôi! 🧧</h2>
+        <p>Tải ứng dụng miễn phí — nhận lộc đầu năm ngay hôm nay</p>
+        <div class="store-buttons">
+            <a href="https://apps.apple.com/us/app/b%C3%B3c-l%C3%AC-x%C3%AC/id6758306529" target="_blank" rel="noopener noreferrer" class="store-btn store-btn-apple">
+                <svg width="30" height="30" viewBox="0 0 496 512" fill="#fff">
+                    <path d="M314.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-27.1-47.3-42.1-85-45.1-35.4-2.9-74 20.7-88.4 20.7-15.2 0-49-19.6-74.4-19.6C63.1 141.2 4 184.8 4 273.4c0 26.2 4.8 53.3 14.4 81.2 12.8 36.9 59 127.2 107.2 125.7 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-92.3zm-56.3-164.2c27.3-32.4 24.8-62.1 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 53.1-11.2 69.5-34.3z"/>
+                </svg>
+                <span class="store-btn-label">
+                    <small>Tải về trên</small>
+                    <strong>App Store</strong>
+                </span>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.app_tet.boc_li_xi" target="_blank" rel="noopener noreferrer" class="store-btn store-btn-google">
+                <svg width="28" height="30" viewBox="0 0 24 24" fill="none">
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92z" fill="#4285F4"/>
+                    <path d="M17.727 8.273L13.792 12l3.935 3.727 4.534-2.617c.82-.474.82-1.746 0-2.22l-4.534-2.617z" fill="#EA4335"/>
+                    <path d="M3.609 22.186L13.792 12l3.935 3.727-11.16 6.44a1.09 1.09 0 0 1-.554.148 1.01 1.01 0 0 1-.404-.129z" fill="#34A853"/>
+                    <path d="M3.609 1.814A1.01 1.01 0 0 1 4.013 1.685c.193 0 .386.05.554.148l11.16 6.44L13.792 12 3.609 1.814z" fill="#FBBC04"/>
+                </svg>
+                <span class="store-btn-label">
+                    <small>Tải về trên</small>
+                    <strong>Google Play</strong>
+                </span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ════════ FOOTER ════════ -->
+    <footer>
+        <div class="footer-inner">
+            <p class="dev-name">Phamdudev · Van Du Pham</p>
+            <p class="copy">&copy; 2026 Bốc Lì Xì. Tất cả quyền được bảo lưu.</p>
+            <div class="footer-links">
+                <a href="mailto:phamdu180199@gmail.com">📧 Liên hệ hỗ trợ</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ─── Floating Particles ─── */
+        const pc=document.getElementById('particles');
+        const emojis=['🧧','💰','🏮','✨','🎊','🧨','💮','🌸','🎋','🪙'];
+        function spawn(){
+            const p=document.createElement('div');p.className='particle';
+            p.textContent=emojis[Math.random()*emojis.length|0];
+            p.style.left=Math.random()*100+'%';
+            p.style.fontSize=(12+Math.random()*20)+'px';
+            const dur=10+Math.random()*14;
+            p.style.animationDuration=dur+'s';
+            p.style.animationDelay=Math.random()*4+'s';
+            pc.appendChild(p);
+            setTimeout(()=>p.remove(),(dur+5)*1000);
+        }
+        for(let i=0;i<12;i++) setTimeout(spawn,i*600);
+        setInterval(spawn,2200);
+
+        /* ─── Scroll Reveal ─── */
+        const io=new IntersectionObserver((entries)=>{
+            entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+        },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    </script>
+</body>
+</html>
